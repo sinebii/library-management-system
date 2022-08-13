@@ -11,13 +11,14 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Data
-public class BAuthor extends BaseUser {
-
+public class BAuthor {
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long bAuthorId;
-    @OneToMany
-    private List<Book> book;
+    private String authorName;
 
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Book> book;
 
 
 }
