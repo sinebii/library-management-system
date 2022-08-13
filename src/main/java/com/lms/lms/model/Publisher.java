@@ -12,11 +12,10 @@ import java.util.List;
 @AllArgsConstructor
 @Data
 @Entity
-public class Publisher{
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class Publisher extends BaseUser{
+
     private Long publisherId;
-    private String publisherName;
+    private String publisherCoyName;
     @OneToMany(cascade = CascadeType.ALL)
     private List<Book> book;
 

@@ -11,12 +11,9 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Data
-public class BAuthor {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long bAuthorId;
-    private String authorName;
+public class BAuthor extends BaseUser{
 
+    private Long bAuthorId;
     @OneToMany(cascade = CascadeType.ALL)
     private List<Book> book;
 
