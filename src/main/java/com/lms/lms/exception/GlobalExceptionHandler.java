@@ -11,7 +11,13 @@ import org.springframework.web.context.request.WebRequest;
 @Slf4j
 public class GlobalExceptionHandler {
     @ExceptionHandler(BookException.class)
-    public ResponseEntity<?> handleBooErrorEx(BookException ex, WebRequest request){
+    public ResponseEntity<?> handleBookErrorEx(BookException ex, WebRequest request){
+        ApiErrorDetail apiErrorDetail = new ApiErrorDetail(ex.getMessage(), request.getDescription(false));
+        return new ResponseEntity<>(apiErrorDetail, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(UserException.class)
+    public ResponseEntity<?> handleUserErrorEx(UserException ex, WebRequest request){
         ApiErrorDetail apiErrorDetail = new ApiErrorDetail(ex.getMessage(), request.getDescription(false));
         return new ResponseEntity<>(apiErrorDetail, HttpStatus.NOT_FOUND);
     }

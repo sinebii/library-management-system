@@ -7,10 +7,11 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.util.List;
 
-@Entity
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
+@Entity
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,9 +19,12 @@ public class Book {
     private String bookName;
     private Long isbn;
     private String bookYear;
-    @ManyToMany(mappedBy = "bookList")
-    private List<Publisher> publisher;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    private Author author;
+    @ManyToOne
+    private BAuthor bAuthors;
+
+    @ManyToOne
+    private Publisher publisher;
+
+
 }

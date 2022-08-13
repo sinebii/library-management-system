@@ -7,17 +7,17 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.util.List;
 
-
-@NoArgsConstructor
 @AllArgsConstructor
-@Data
+@NoArgsConstructor
 @Entity
-public class Publisher extends BaseUser{
+@Data
+public class BAuthor extends BaseUser {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long publisherId;
-    private String publisherName;
+    private Long bAuthorId;
     @OneToMany
     private List<Book> book;
+
+
 
 }

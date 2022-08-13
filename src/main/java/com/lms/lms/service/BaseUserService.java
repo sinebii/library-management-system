@@ -2,7 +2,8 @@ package com.lms.lms.service;
 
 import com.lms.lms.model.BaseUser;
 import com.lms.lms.payload.request.CreateUserRequest;
+import com.lms.lms.payload.response.CreateUserResponse;
 
 public interface BaseUserService {
-    BaseUser createUser(CreateUserRequest createUserRequest);
+    CreateUserResponse createUser(CreateUserRequest createUserRequest);
 }

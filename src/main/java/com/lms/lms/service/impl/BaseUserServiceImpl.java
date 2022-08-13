@@ -1,13 +1,37 @@
 package com.lms.lms.service.impl;
 
+
 import com.lms.lms.model.BaseUser;
 import com.lms.lms.payload.request.CreateUserRequest;
+import com.lms.lms.payload.response.CreateUserResponse;
+import com.lms.lms.repository.UserRepository;
 import com.lms.lms.service.BaseUserService;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+
+@Service
 public class BaseUserServiceImpl implements BaseUserService {
-    @Override
-    public BaseUser createUser(CreateUserRequest createUserRequest) {
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private ModelMapper mapper;
 
-        return null;
+    @Override
+    public CreateUserResponse createUser(CreateUserRequest createUserRequest) {
+         if(userRepository.findAllByEmail(createUserRequest.getEmail())!=null) throw new RuntimeException("User already exist");
+         BaseUser baseUser = BaseUser.builder()
+                 .firstName(createUserRequest.getFirstName())
+                 .lastName(createUserRequest.getLastName())
+                 .email(createUserRequest.getEmail())
+                 .password(createUserRequest.getPassword())
+                 .createdDate(Instant.now())
+                 .lastModifiedDate(Instant.now())
+                 .build();
+         BaseUser savedUser = userRepository.save(baseUser);
+
+        return mapper.map(savedUser, CreateUserResponse.class);
     }
 }
