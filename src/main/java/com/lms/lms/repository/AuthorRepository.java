@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface AuthorRepository extends JpaRepository<BAuthor, Long> {
 
-    boolean findByEmail(String email);
+    BAuthor findByEmail(String email);
 }

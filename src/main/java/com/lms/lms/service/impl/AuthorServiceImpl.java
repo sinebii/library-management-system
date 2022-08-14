@@ -21,7 +21,9 @@ public class AuthorServiceImpl implements AuthorService {
     private ModelMapper mapper;
     @Override
     public CreateAuthorResponse createAuthor(CreateAuthorRequest createAuthorRequest) {
-        if(authorRepository.findByEmail(createAuthorRequest.getEmail())) throw new UserException("User already exist");
+
+        System.out.println(authorRepository.findByEmail(createAuthorRequest.getEmail()));
+        if(authorRepository.findByEmail(createAuthorRequest.getEmail()) != null) throw new UserException("User already exist");
         BAuthor author = BAuthor.builder()
                 .firstName(createAuthorRequest.getFirstName())
                 .lastName(createAuthorRequest.getLastName())
