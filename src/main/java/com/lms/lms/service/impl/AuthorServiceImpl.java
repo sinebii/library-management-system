@@ -6,6 +6,8 @@ import com.lms.lms.payload.request.CreateAuthorRequest;
 import com.lms.lms.payload.response.CreateAuthorResponse;
 import com.lms.lms.repository.AuthorRepository;
 import com.lms.lms.service.AuthorService;
+import lombok.Data;
+import lombok.ToString;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,7 +24,6 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public CreateAuthorResponse createAuthor(CreateAuthorRequest createAuthorRequest) {
 
-        System.out.println(authorRepository.findByEmail(createAuthorRequest.getEmail()));
         if(authorRepository.findByEmail(createAuthorRequest.getEmail()) != null) throw new UserException("User already exist");
         BAuthor author = BAuthor.builder()
                 .firstName(createAuthorRequest.getFirstName())
@@ -33,6 +34,7 @@ public class AuthorServiceImpl implements AuthorService {
                 .lastModifiedDate(Instant.now())
                 .build();
         BAuthor savedAuthor = authorRepository.save(author);
+
         return mapper.map(savedAuthor, CreateAuthorResponse.class);
     }
 }

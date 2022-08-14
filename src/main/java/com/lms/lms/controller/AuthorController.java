@@ -22,6 +22,6 @@ public class AuthorController {
 
     @PostMapping("/create")
     public ResponseEntity<CreateAuthorResponse> createAuthor(@RequestBody CreateAuthorRequest createAuthorRequest){
-        return new ResponseEntity<>(authorService.createAuthor(createAuthorRequest), HttpStatus.CREATED);
+        return new ResponseEntity<>(authorService.createAuthor(createAuthorRequest), HttpStatus.OK);
     }
 }

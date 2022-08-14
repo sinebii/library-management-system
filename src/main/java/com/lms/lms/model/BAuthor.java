@@ -10,11 +10,11 @@ import org.springframework.data.annotation.LastModifiedDate;
 import javax.persistence.*;
 import java.time.Instant;
 import java.util.List;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Builder
+@Data
 public class BAuthor{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
