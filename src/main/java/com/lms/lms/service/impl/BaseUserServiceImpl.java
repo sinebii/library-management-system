@@ -1,6 +1,7 @@
 package com.lms.lms.service.impl;
 
 
+import com.lms.lms.exception.UserException;
 import com.lms.lms.model.BaseUser;
 import com.lms.lms.payload.request.CreateUserRequest;
 import com.lms.lms.payload.response.CreateUserResponse;
@@ -21,7 +22,7 @@ public class BaseUserServiceImpl implements BaseUserService {
 
     @Override
     public CreateUserResponse createUser(CreateUserRequest createUserRequest) {
-         if(userRepository.findAllByEmail(createUserRequest.getEmail())!=null) throw new RuntimeException("User already exist");
+         if(userRepository.findAllByEmail(createUserRequest.getEmail())!=null) throw new UserException("User already exist");
          BaseUser baseUser = BaseUser.builder()
                  .firstName(createUserRequest.getFirstName())
                  .lastName(createUserRequest.getLastName())

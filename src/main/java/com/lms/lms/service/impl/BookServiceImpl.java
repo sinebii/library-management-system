@@ -29,8 +29,8 @@ public class BookServiceImpl implements BookService {
     @Override
     public CreateBookResponse createNewBook(CreateBookRequest createBookRequest, Long authorId, Long publisherId) {
         if(bookRepository.findByIsbn(createBookRequest.getIsbn())!=null) throw new BookException("This book already exist");
-        BAuthor bookAuthor = authorRepository.findById(authorId).orElseThrow(()->new BookException(" Book not found"));
-        Publisher publisher = publisherRepository.findById(publisherId).orElseThrow(()->new PublisherException(" Publisher not found"));
+        BAuthor bookAuthor = authorRepository.findById(authorId).orElseThrow(()->new BookException("Author does not exist"));
+        Publisher publisher = publisherRepository.findById(publisherId).orElseThrow(()->new PublisherException("Publisher not found "+publisherId));
         Book book = Book.builder()
                 .bookName(createBookRequest.getBookName())
                 .bookYear(createBookRequest.getBookYear())
