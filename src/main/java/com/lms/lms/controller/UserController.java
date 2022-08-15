@@ -21,4 +21,9 @@ public class UserController {
     public ResponseEntity<CreateUserResponse> createNewUser(@RequestBody CreateUserRequest createUserRequest){
         return new ResponseEntity<>(baseUserService.createUser(createUserRequest), HttpStatus.OK);
     }
+
+    @PostMapping
+    public ResponseEntity<String> assignBookToUser(Long bookId, Long userId){
+        return new ResponseEntity<>(baseUserService.borrowBook(userId,bookId));
+    }
 }

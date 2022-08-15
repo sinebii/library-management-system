@@ -6,4 +6,6 @@ import com.lms.lms.payload.response.CreateUserResponse;
 
 public interface BaseUserService {
     CreateUserResponse createUser(CreateUserRequest createUserRequest);
+
+    String borrowBook(Long userId, Long bookId);
 }

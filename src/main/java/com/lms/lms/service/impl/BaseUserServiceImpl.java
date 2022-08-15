@@ -35,4 +35,9 @@ public class BaseUserServiceImpl implements BaseUserService {
 
         return mapper.map(savedUser, CreateUserResponse.class);
     }
+
+    @Override
+    public String borrowBook(Long userId, Long bookId) {
+        return null;
+    }
 }
