@@ -19,13 +19,14 @@ public class PublisherServiceImpl implements PublisherService {
     private ModelMapper mapper;
     @Override
     public CreatePublisherResponse createPublisher(CreatePublisherRequest createPublisherRequest) {
-        if(publisherRepository.findById(createPublisherRequest.getPublisherId()).isPresent()) throw new UserException("Publisher exist");
+        if(publisherRepository.findByEmail(createPublisherRequest.getEmail())!=null && publisherRepository.findByPublisherId(createPublisherRequest.getPublisherId())!=null) throw new UserException("This publisher exist");
         Publisher publisher = Publisher.builder()
                 .firstName(createPublisherRequest.getFirstName())
                 .lastName(createPublisherRequest.getLastName())
                 .email(createPublisherRequest.getEmail())
                 .password(createPublisherRequest.getPassword())
                 .publisherId(createPublisherRequest.getPublisherId())
+                .publisherCoyName(createPublisherRequest.getPublisherCoyName())
                 .createdDate(Instant.now())
                 .lastModifiedDate(Instant.now())
                 .build();

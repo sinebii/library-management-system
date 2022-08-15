@@ -4,5 +4,5 @@ import com.lms.lms.payload.request.CreateBookRequest;
 import com.lms.lms.payload.response.CreateBookResponse;
 
 public interface BookService {
-    CreateBookResponse createNewBook(CreateBookRequest createBookRequest);
+    CreateBookResponse createNewBook(CreateBookRequest createBookRequest, Long authorId, Long publisherId);
 }

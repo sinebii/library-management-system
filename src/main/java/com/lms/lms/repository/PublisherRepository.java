@@ -4,5 +4,6 @@ import com.lms.lms.model.Publisher;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PublisherRepository extends JpaRepository<Publisher, Long> {
-    Publisher findById(Publisher publisher);
+    Publisher findByEmail(String email);
+    Publisher findByPublisherId(Long publisherId);
 }

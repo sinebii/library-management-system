@@ -21,4 +21,6 @@ public class GlobalExceptionHandler {
         ApiErrorDetail apiErrorDetail = new ApiErrorDetail(ex.getMessage(), request.getDescription(false));
         return new ResponseEntity<>(apiErrorDetail, HttpStatus.NOT_FOUND);
     }
+
+
 }

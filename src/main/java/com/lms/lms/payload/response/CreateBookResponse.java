@@ -16,6 +16,4 @@ public class CreateBookResponse {
     private String bookName;
     private Long isbn;
     private String bookYear;
-    private BAuthor bAuthor;
-    private Publisher publisher;
 }
