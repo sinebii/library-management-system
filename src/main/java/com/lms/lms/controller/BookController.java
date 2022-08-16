@@ -1,5 +1,6 @@
 package com.lms.lms.controller;
 
+import com.lms.lms.model.Book;
 import com.lms.lms.payload.request.CreateBookRequest;
 import com.lms.lms.payload.response.CreateBookResponse;
 import com.lms.lms.service.BookService;
@@ -18,4 +19,9 @@ public class BookController {
     public ResponseEntity<CreateBookResponse> createBook(@RequestBody CreateBookRequest createBookRequest,@PathVariable(name = "authorId") Long authorId, @PathVariable(name = "publisherId")Long publisherId){
         return new ResponseEntity<>(bookService.createNewBook(createBookRequest, authorId,publisherId), HttpStatus.CREATED);
     }
+    @PostMapping("/borrow/{bookId}/{userId}")
+    public ResponseEntity<Book> borrowBook(@PathVariable(name = "bookId") Long bookId, @PathVariable(name = "userId") Long userId){
+        return  new ResponseEntity<>(bookService.borrowBook(bookId,userId),HttpStatus.OK);
+    }
+
 }

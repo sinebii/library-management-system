@@ -1,10 +1,14 @@
 package com.lms.lms.service.impl;
 
 
+import com.lms.lms.exception.BookException;
 import com.lms.lms.exception.UserException;
+import com.lms.lms.model.BAuthor;
 import com.lms.lms.model.BaseUser;
+import com.lms.lms.model.Book;
 import com.lms.lms.payload.request.CreateUserRequest;
 import com.lms.lms.payload.response.CreateUserResponse;
+import com.lms.lms.repository.BookRepository;
 import com.lms.lms.repository.UserRepository;
 import com.lms.lms.service.BaseUserService;
 import org.modelmapper.ModelMapper;
@@ -12,11 +16,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.List;
 
 @Service
 public class BaseUserServiceImpl implements BaseUserService {
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private BookRepository bookRepository;
     @Autowired
     private ModelMapper mapper;
 
@@ -34,10 +41,5 @@ public class BaseUserServiceImpl implements BaseUserService {
          BaseUser savedUser = userRepository.save(baseUser);
 
         return mapper.map(savedUser, CreateUserResponse.class);
-    }
-
-    @Override
-    public String borrowBook(Long userId, Long bookId) {
-        return null;
     }
 }

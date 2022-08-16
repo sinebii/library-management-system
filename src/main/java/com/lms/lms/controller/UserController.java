@@ -6,10 +6,7 @@ import com.lms.lms.service.BaseUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/user")
@@ -22,8 +19,9 @@ public class UserController {
         return new ResponseEntity<>(baseUserService.createUser(createUserRequest), HttpStatus.OK);
     }
 
-    @PostMapping
-    public ResponseEntity<String> assignBookToUser(Long bookId, Long userId){
-        return new ResponseEntity<>(baseUserService.borrowBook(userId,bookId));
+    @PostMapping("/borrow-book/{userId}/{bookId}")
+    public ResponseEntity<String> assignBookToUser(@PathVariable(name = "userId") Long bookId, @PathVariable(name = "bookId") Long userId){
+//        return new ResponseEntity<>(baseUserService.borrowBook(userId,bookId), HttpStatus.OK);
+        return null;
     }
 }
