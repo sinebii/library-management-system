@@ -12,5 +12,4 @@ public interface BookRepository extends JpaRepository<Book,Long> {
 
 //    @Query(value = "SELECT bk FROM Book bk WHERE bk. = ?1 and bk.user= ?2")
 //    Book findBorrowedBook(Book book, BaseUser baseUser);
-    List<Book> findBooksByUser(BaseUser baseUser);
 }

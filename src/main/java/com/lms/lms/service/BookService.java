@@ -7,5 +7,5 @@ import com.lms.lms.payload.response.CreateBookResponse;
 
 public interface BookService {
     CreateBookResponse createNewBook(CreateBookRequest createBookRequest, Long authorId, Long publisherId);
-    Book borrowBook(Long bookId, Long userId);
+    String borrowBook(Long bookId, Long userId);
 }

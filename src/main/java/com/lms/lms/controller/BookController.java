@@ -20,7 +20,7 @@ public class BookController {
         return new ResponseEntity<>(bookService.createNewBook(createBookRequest, authorId,publisherId), HttpStatus.CREATED);
     }
     @PostMapping("/borrow/{bookId}/{userId}")
-    public ResponseEntity<Book> borrowBook(@PathVariable(name = "bookId") Long bookId, @PathVariable(name = "userId") Long userId){
+    public ResponseEntity<String> borrowBook(@PathVariable(name = "bookId") Long bookId, @PathVariable(name = "userId") Long userId){
         return  new ResponseEntity<>(bookService.borrowBook(bookId,userId),HttpStatus.OK);
     }
 

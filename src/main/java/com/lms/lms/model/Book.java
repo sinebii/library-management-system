@@ -24,9 +24,8 @@ public class Book {
     private String bookYear;
     private Long availableQuantity;
 
-    @JsonIgnore
-    @ManyToMany(mappedBy = "borrowedBooks")
-    private List<BaseUser> user;
+    @OneToMany
+    private List<Book> books;
 
     @ManyToOne
     private BAuthor bAuthor;
