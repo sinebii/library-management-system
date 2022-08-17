@@ -2,7 +2,9 @@ package com.lms.lms.controller;
 
 import com.lms.lms.model.Book;
 import com.lms.lms.payload.request.CreateBookRequest;
+import com.lms.lms.payload.request.UpdateBookQtyRequest;
 import com.lms.lms.payload.response.CreateBookResponse;
+import com.lms.lms.payload.response.UpdateBookResponse;
 import com.lms.lms.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,6 +24,10 @@ public class BookController {
     @PostMapping("/borrow/{bookId}/{userId}")
     public ResponseEntity<String> borrowBook(@PathVariable(name = "bookId") Long bookId, @PathVariable(name = "userId") Long userId){
         return  new ResponseEntity<>(bookService.borrowBook(bookId,userId),HttpStatus.OK);
+    }
+    @PutMapping("/update/{bookId}")
+    public ResponseEntity<UpdateBookResponse> updateBook(@RequestBody UpdateBookQtyRequest updateBookQtyRequest, @PathVariable(name = "bookId")Long bookId){
+        return new ResponseEntity<>(bookService.updateBookQty(bookId, updateBookQtyRequest), HttpStatus.OK);
     }
 
 }

@@ -8,7 +8,9 @@ import com.lms.lms.model.BaseUser;
 import com.lms.lms.model.Book;
 import com.lms.lms.model.Publisher;
 import com.lms.lms.payload.request.CreateBookRequest;
+import com.lms.lms.payload.request.UpdateBookQtyRequest;
 import com.lms.lms.payload.response.CreateBookResponse;
+import com.lms.lms.payload.response.UpdateBookResponse;
 import com.lms.lms.repository.AuthorRepository;
 import com.lms.lms.repository.BookRepository;
 import com.lms.lms.repository.PublisherRepository;
@@ -20,6 +22,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 @Service
 public class BookServiceImpl implements BookService {
@@ -75,6 +78,14 @@ public class BookServiceImpl implements BookService {
 
 
         return message;
+    }
+
+    @Override
+    public UpdateBookResponse updateBookQty(Long bookId, UpdateBookQtyRequest bookQty) {
+        Book bookToUpdate = bookRepository.findById(bookId).orElseThrow(()->new BookException("Book not found"));
+        bookToUpdate.setAvailableQuantity(bookToUpdate.getAvailableQuantity()+bookQty.getAvailableQuantity());
+        bookRepository.save(bookToUpdate);
+        return mapper.map(bookToUpdate,UpdateBookResponse.class);
     }
 
 }

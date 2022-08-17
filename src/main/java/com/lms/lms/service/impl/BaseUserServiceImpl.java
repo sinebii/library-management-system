@@ -42,4 +42,12 @@ public class BaseUserServiceImpl implements BaseUserService {
 
         return mapper.map(savedUser, CreateUserResponse.class);
     }
+
+    @Override
+    public List<Book> getBorrowedBooksByUser(Long userId) {
+        BaseUser user = userRepository.findById(userId).orElseThrow(()-> new UserException("User not found"));
+        return user.getBorrowedBooks();
+
+    }
+
 }
