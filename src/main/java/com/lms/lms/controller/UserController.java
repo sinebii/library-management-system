@@ -2,6 +2,7 @@ package com.lms.lms.controller;
 
 import com.lms.lms.model.Book;
 import com.lms.lms.payload.request.CreateUserRequest;
+import com.lms.lms.payload.request.UpdatePassword;
 import com.lms.lms.payload.request.UpdateUserRequest;
 import com.lms.lms.payload.response.CreateUserResponse;
 import com.lms.lms.service.BaseUserService;
@@ -30,5 +31,9 @@ public class UserController {
     @PutMapping("/update/{userId}")
     public ResponseEntity<String> updateUserAccount(@RequestBody UpdateUserRequest updateUserRequest, @PathVariable(name="userId") Long userId){
         return new ResponseEntity<>(baseUserService.updateUser(userId, updateUserRequest), HttpStatus.OK);
+    }
+    @PutMapping("/update-password/{userId}")
+    public ResponseEntity<String> updatePassword(@RequestBody UpdatePassword updatePassword, @PathVariable(name = "userId") Long userId){
+        return new ResponseEntity<>(baseUserService.updatePassword(userId, updatePassword), HttpStatus.OK);
     }
 }

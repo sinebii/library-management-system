@@ -7,6 +7,7 @@ import com.lms.lms.model.BAuthor;
 import com.lms.lms.model.BaseUser;
 import com.lms.lms.model.Book;
 import com.lms.lms.payload.request.CreateUserRequest;
+import com.lms.lms.payload.request.UpdatePassword;
 import com.lms.lms.payload.request.UpdateUserRequest;
 import com.lms.lms.payload.response.CreateUserResponse;
 import com.lms.lms.repository.BookRepository;
@@ -61,6 +62,16 @@ public class BaseUserServiceImpl implements BaseUserService {
        user.setEmail(updateUserRequest.getEmail());
         userRepository.save(user);
         message = "Account successfully updated ";
+        return message;
+    }
+
+    @Override
+    public String updatePassword(Long userId, UpdatePassword updatePassword) {
+        String message = "";
+        BaseUser user = userRepository.findById(userId).orElseThrow(()->new UserException("User not found"));
+        user.setPassword(updatePassword.getPassword());
+        userRepository.save(user);
+        message = "Password was successfully saved";
         return message;
     }
 
