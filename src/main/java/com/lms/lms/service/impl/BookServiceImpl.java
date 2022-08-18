@@ -20,9 +20,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+
 import java.util.List;
-import java.util.Locale;
+import java.util.Objects;
 
 @Service
 public class BookServiceImpl implements BookService {
@@ -66,7 +66,7 @@ public class BookServiceImpl implements BookService {
 
         listOfBorrowedBooks = user.getBorrowedBooks();
         if(listOfBorrowedBooks.contains(book)){
-            throw new UserException("You have already borrowed this book");
+            throw new BookException("You already borrowed this book");
         }else{
             listOfBorrowedBooks.add(book);
             user.setBorrowedBooks(listOfBorrowedBooks);
@@ -83,6 +83,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public UpdateBookResponse updateBookQty(Long bookId, UpdateBookQtyRequest bookQty) {
         Book bookToUpdate = bookRepository.findById(bookId).orElseThrow(()->new BookException("Book not found"));
+        if(bookQty.getAvailableQuantity() <= 0) throw new BookException("Invalid format, Please enter a value above 0");
         bookToUpdate.setAvailableQuantity(bookToUpdate.getAvailableQuantity()+bookQty.getAvailableQuantity());
         bookRepository.save(bookToUpdate);
         return mapper.map(bookToUpdate,UpdateBookResponse.class);

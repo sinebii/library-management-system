@@ -7,6 +7,7 @@ import com.lms.lms.model.BAuthor;
 import com.lms.lms.model.BaseUser;
 import com.lms.lms.model.Book;
 import com.lms.lms.payload.request.CreateUserRequest;
+import com.lms.lms.payload.request.UpdateUserRequest;
 import com.lms.lms.payload.response.CreateUserResponse;
 import com.lms.lms.repository.BookRepository;
 import com.lms.lms.repository.UserRepository;
@@ -48,6 +49,19 @@ public class BaseUserServiceImpl implements BaseUserService {
         BaseUser user = userRepository.findById(userId).orElseThrow(()-> new UserException("User not found"));
         return user.getBorrowedBooks();
 
+    }
+
+    @Override
+    public String updateUser(Long userId, UpdateUserRequest updateUserRequest) {
+        String message = "";
+        BaseUser user = userRepository.findById(userId).orElseThrow(()->new UserException("User not found"));
+
+       user.setFirstName(updateUserRequest.getFirstName());
+       user.setLastName(updateUserRequest.getLastName());
+       user.setEmail(updateUserRequest.getEmail());
+        userRepository.save(user);
+        message = "Account successfully updated ";
+        return message;
     }
 
 }

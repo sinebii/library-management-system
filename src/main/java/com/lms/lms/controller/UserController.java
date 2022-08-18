@@ -2,6 +2,7 @@ package com.lms.lms.controller;
 
 import com.lms.lms.model.Book;
 import com.lms.lms.payload.request.CreateUserRequest;
+import com.lms.lms.payload.request.UpdateUserRequest;
 import com.lms.lms.payload.response.CreateUserResponse;
 import com.lms.lms.service.BaseUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,5 +26,9 @@ public class UserController {
     @GetMapping("/get-books/{userId}")
     public ResponseEntity<List<Book>> getListOfBorrowedBooks(@PathVariable (name = "userId")Long userId){
         return new ResponseEntity<>(baseUserService.getBorrowedBooksByUser(userId),HttpStatus.OK);
+    }
+    @PutMapping("/update/{userId}")
+    public ResponseEntity<String> updateUserAccount(@RequestBody UpdateUserRequest updateUserRequest, @PathVariable(name="userId") Long userId){
+        return new ResponseEntity<>(baseUserService.updateUser(userId, updateUserRequest), HttpStatus.OK);
     }
 }
