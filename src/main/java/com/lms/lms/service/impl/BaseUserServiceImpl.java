@@ -1,18 +1,16 @@
 package com.lms.lms.service.impl;
 
 
-import com.lms.lms.exception.BookException;
 import com.lms.lms.exception.UserException;
-import com.lms.lms.model.BAuthor;
 import com.lms.lms.model.BaseUser;
 import com.lms.lms.model.Book;
 import com.lms.lms.payload.request.CreateUserRequest;
 import com.lms.lms.payload.request.UpdatePassword;
 import com.lms.lms.payload.request.UpdateUserRequest;
 import com.lms.lms.payload.response.CreateUserResponse;
-import com.lms.lms.repository.BookRepository;
 import com.lms.lms.repository.UserRepository;
 import com.lms.lms.service.BaseUserService;
+import com.lms.lms.utils.UtilsHelper;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,17 +23,20 @@ public class BaseUserServiceImpl implements BaseUserService {
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private BookRepository bookRepository;
-    @Autowired
     private ModelMapper mapper;
+    @Autowired
+    private UtilsHelper utilsHelper;
 
     @Override
     public CreateUserResponse createUser(CreateUserRequest createUserRequest) {
          if(userRepository.findAllByEmail(createUserRequest.getEmail())!=null) throw new UserException("User already exist");
          BaseUser baseUser = BaseUser.builder()
+                 .uId(utilsHelper.generateRandom(30))
                  .firstName(createUserRequest.getFirstName())
                  .lastName(createUserRequest.getLastName())
                  .email(createUserRequest.getEmail())
+                 .emailVerificationStatus(false)
+                 .emailVerificationToke(utilsHelper.generateRandom(20))
                  .password(createUserRequest.getPassword())
                  .createdDate(Instant.now())
                  .lastModifiedDate(Instant.now())
@@ -54,7 +55,7 @@ public class BaseUserServiceImpl implements BaseUserService {
 
     @Override
     public String updateUser(Long userId, UpdateUserRequest updateUserRequest) {
-        String message = "";
+        String message;
         BaseUser user = userRepository.findById(userId).orElseThrow(()->new UserException("User not found"));
 
        user.setFirstName(updateUserRequest.getFirstName());
@@ -67,7 +68,7 @@ public class BaseUserServiceImpl implements BaseUserService {
 
     @Override
     public String updatePassword(Long userId, UpdatePassword updatePassword) {
-        String message = "";
+        String message;
         BaseUser user = userRepository.findById(userId).orElseThrow(()->new UserException("User not found"));
         user.setPassword(updatePassword.getPassword());
         userRepository.save(user);
