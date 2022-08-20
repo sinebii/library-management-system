@@ -13,9 +13,14 @@ import com.lms.lms.service.BaseUserService;
 import com.lms.lms.utils.UtilsHelper;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -26,6 +31,8 @@ public class BaseUserServiceImpl implements BaseUserService {
     private ModelMapper mapper;
     @Autowired
     private UtilsHelper utilsHelper;
+    @Autowired
+    BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
     public CreateUserResponse createUser(CreateUserRequest createUserRequest) {
@@ -37,7 +44,7 @@ public class BaseUserServiceImpl implements BaseUserService {
                  .email(createUserRequest.getEmail())
                  .emailVerificationStatus(false)
                  .emailVerificationToke(utilsHelper.generateRandom(20))
-                 .password(createUserRequest.getPassword())
+                 .password(bCryptPasswordEncoder.encode(createUserRequest.getPassword()))
                  .createdDate(Instant.now())
                  .lastModifiedDate(Instant.now())
                  .build();
@@ -76,4 +83,10 @@ public class BaseUserServiceImpl implements BaseUserService {
         return message;
     }
 
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        BaseUser baseUser = userRepository.findAllByEmail(email);
+        if(baseUser ==null) throw new UsernameNotFoundException(email);
+        return new User(baseUser.getEmail(), baseUser.getPassword(), new ArrayList<>());
+    }
 }
