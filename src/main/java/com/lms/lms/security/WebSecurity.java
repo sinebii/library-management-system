@@ -21,6 +21,8 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
         http.csrf().disable().authorizeRequests()
                 .antMatchers(HttpMethod.POST,SecurityConstants.SIGNUP_URL)
                 .permitAll()
+                .antMatchers("/v2/api-docs","/swagger-ui/**","/swagger-resources/**","/swagger-ui/index.html#")
+                .permitAll()
                 .anyRequest().authenticated().and().addFilter(new AuthenticationFilter(authenticationManager()));
     }
     @Override
