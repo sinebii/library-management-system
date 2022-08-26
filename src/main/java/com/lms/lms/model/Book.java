@@ -24,14 +24,14 @@ public class Book {
     private String bookYear;
     private Long availableQuantity;
 
-    @OneToMany
-    private List<Book> books;
-
     @ManyToOne
     private BAuthor bAuthor;
 
     @ManyToOne
     private Publisher publisher;
+
+    @OneToMany
+    private List<BookRequest> bookRequest;
 
 
 }

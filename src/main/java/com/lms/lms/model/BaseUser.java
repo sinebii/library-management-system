@@ -42,6 +42,8 @@ public class BaseUser implements Serializable {
     @JsonIgnore
     @ManyToMany
     private List<Book> borrowedBooks;
+    @OneToMany
+    private List<BookRequest> bookRequests;
     @CreatedDate
     @Column(name = "created_date", updatable = false)
     private Instant createdDate = Instant.now();

@@ -28,5 +28,11 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(apiErrorDetail, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(BookRequestException.class)
+    public ResponseEntity<?> handlePublisherErrorEx(BookRequestException ex, WebRequest request){
+        ApiErrorDetail apiErrorDetail = new ApiErrorDetail(ex.getMessage(), request.getDescription(false));
+        return new ResponseEntity<>(apiErrorDetail, HttpStatus.NOT_FOUND);
+    }
+
 
 }
