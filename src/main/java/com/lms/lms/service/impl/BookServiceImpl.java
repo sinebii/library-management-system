@@ -62,10 +62,10 @@ public class BookServiceImpl implements BookService {
         BaseUser user = userRepository.findById(userId).orElseThrow(()->new UserException("User not found"));
         Book book = bookRepository.findById(bookId).orElseThrow(()->new BookException("Book not found"));
         if(book.getAvailableQuantity() <=0) throw new BookException("This book is currently not available");
-        if(user.getBorrowedBooks().contains(book))throw new BookException("You already have this book on your list");
-        if(bookRequestRepository.findBookRequestByBaseUserAndBook(user,book)!=null) throw new BookRequestException("You have an existing request for this book");
-
+        if(bookRequestRepository.findBookRequestByBaseUserAndBook(user,book)!=null && bookRequestRepository.findBookRequestByBaseUserAndBook(user,book).getStatus()==BookRequestStatus.PENDING_APPROVE ) throw new BookRequestException("You have an existing request for this book");
+        if(bookRequestRepository.findBookRequestByBaseUserAndBook(user,book).getStatus()==BookRequestStatus.PENDING_RETURN ) throw new BookRequestException("You have an existing RETURN request for this book");
         if(requestBookReturnBookRequest.getBookRequestStatus().equals(BookRequestStatus.PENDING_APPROVE)){
+            if(user.getBorrowedBooks().contains(book))throw new BookException("You already have this book on your list");
             BookRequest bookRequest = BookRequest.builder()
                     .baseUser(user)
                     .status(BookRequestStatus.PENDING_APPROVE)
@@ -78,6 +78,10 @@ public class BookServiceImpl implements BookService {
         }else if(requestBookReturnBookRequest.getBookRequestStatus().equals(BookRequestStatus.PENDING_RETURN)){
             BookRequest bookRequest = BookRequest.builder()
                     .status(BookRequestStatus.PENDING_RETURN)
+                    .baseUser(user)
+                    .book(book)
+                    .createdDate(Instant.now())
+                    .lastModifiedDate(Instant.now())
                     .build();
             bookRequestRepository.save(bookRequest);
             message = "Your request to return book was received";
