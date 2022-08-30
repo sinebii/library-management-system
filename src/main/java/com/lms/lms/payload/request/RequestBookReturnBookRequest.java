@@ -16,4 +16,5 @@ import javax.persistence.Enumerated;
 public class RequestBookReturnBookRequest {
     @Enumerated(EnumType.STRING)
     private BookRequestStatus bookRequestStatus;
+    private Long requestId;
 }

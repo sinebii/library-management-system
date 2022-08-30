@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BookServiceImpl implements BookService {
@@ -61,30 +62,32 @@ public class BookServiceImpl implements BookService {
         String message = "";
         BaseUser user = userRepository.findById(userId).orElseThrow(()->new UserException("User not found"));
         Book book = bookRepository.findById(bookId).orElseThrow(()->new BookException("Book not found"));
+
+
+        for(BookRequest bkRequest: bookRequestRepository.findBookRequestByBaseUserAndBook(user,book)){
+            if(bkRequest.getStatus().equals(BookRequestStatus.PENDING_RETURN))throw new BookRequestException("You have an existing RETURN request for this book");
+        }
+        Optional<BookRequest> bookRequest = bookRequestRepository.findById(requestBookReturnBookRequest.getRequestId());
+        System.out.println("Book request:"+bookRequest);
+        if(bookRequest.isPresent()){
+//            bookRequest(BookRequestStatus.PENDING_RETURN);
+//            bookRequestRepository.save(bookRequest);
+            message = "Your request to return book was received";
+        }
         if(book.getAvailableQuantity() <=0) throw new BookException("This book is currently not available");
-        if(bookRequestRepository.findBookRequestByBaseUserAndBook(user,book)!=null && bookRequestRepository.findBookRequestByBaseUserAndBook(user,book).getStatus()==BookRequestStatus.PENDING_APPROVE ) throw new BookRequestException("You have an existing request for this book");
-        if(bookRequestRepository.findBookRequestByBaseUserAndBook(user,book).getStatus()==BookRequestStatus.PENDING_RETURN ) throw new BookRequestException("You have an existing RETURN request for this book");
+        //Todo line 65 should return non-unique object because a user should borrow a particular book if he has returned it bfore
+
         if(requestBookReturnBookRequest.getBookRequestStatus().equals(BookRequestStatus.PENDING_APPROVE)){
             if(user.getBorrowedBooks().contains(book))throw new BookException("You already have this book on your list");
-            BookRequest bookRequest = BookRequest.builder()
+            BookRequest newBookRequest = BookRequest.builder()
                     .baseUser(user)
                     .status(BookRequestStatus.PENDING_APPROVE)
                     .book(book)
                     .createdDate(Instant.now())
                     .lastModifiedDate(Instant.now())
                     .build();
-            bookRequestRepository.save(bookRequest);
+            bookRequestRepository.save(newBookRequest);
             message = "Your book request was sent successfully ";
-        }else if(requestBookReturnBookRequest.getBookRequestStatus().equals(BookRequestStatus.PENDING_RETURN)){
-            BookRequest bookRequest = BookRequest.builder()
-                    .status(BookRequestStatus.PENDING_RETURN)
-                    .baseUser(user)
-                    .book(book)
-                    .createdDate(Instant.now())
-                    .lastModifiedDate(Instant.now())
-                    .build();
-            bookRequestRepository.save(bookRequest);
-            message = "Your request to return book was received";
         }
         return message;
     }
