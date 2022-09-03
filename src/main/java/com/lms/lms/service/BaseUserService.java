@@ -15,5 +15,6 @@ public interface BaseUserService  extends UserDetailsService {
     List<Book> getBorrowedBooksByUser(Long userId);
     String updateUser(Long userId, UpdateUserRequest updateUserRequest);
     String updatePassword(Long userId, UpdatePassword updatePassword);
+    CreateUserResponse getUser(String email);
 
 }

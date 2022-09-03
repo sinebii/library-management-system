@@ -19,21 +19,22 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception{
         http.csrf().disable().authorizeRequests()
-                .antMatchers(SecurityConstants.SIGNUP_URL)
-                //.antMatchers(HttpMethod.POST,SecurityConstants.SIGNUP_URL)
-                .permitAll()
-                .antMatchers(SecurityConstants.BOOK_URL)
-                .permitAll()
-                .antMatchers(SecurityConstants.AUTHOR_URL)
-                .permitAll()
-                .antMatchers(SecurityConstants.PUBLISHER_URL)
+                .antMatchers(HttpMethod.POST,SecurityConstants.SIGNUP_URL)
                 .permitAll()
                 .antMatchers("/v2/api-docs","/swagger-ui/**","/swagger-resources/**","/swagger-ui/index.html#")
                 .permitAll()
-                .anyRequest().authenticated().and().addFilter(new AuthenticationFilter(authenticationManager()));
+                .anyRequest().authenticated().and()
+                .addFilter(getAuthenticationFilter())
+                .addFilter(new AuthorizationFilter(authenticationManager()));
     }
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception{
         auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
+    }
+
+    public AuthenticationFilter getAuthenticationFilter() throws Exception{
+        final AuthenticationFilter filter = new AuthenticationFilter(authenticationManager());
+        filter.setFilterProcessesUrl("/users/login");
+        return filter;
     }
 }

@@ -20,5 +20,9 @@ public class LmsApplication {
     public static void main(String[] args) {
         SpringApplication.run(LmsApplication.class, args);
     }
+    @Bean
+    public SpringApplicationContext springApplicationContext(){
+        return new SpringApplicationContext();
+    }
 
 }

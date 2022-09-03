@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/users")
+@RequestMapping("/users")
 public class UserController {
     @Autowired
     private BaseUserService baseUserService;
@@ -35,5 +35,10 @@ public class UserController {
     @PutMapping("/update-password/{userId}")
     public ResponseEntity<String> updatePassword(@RequestBody UpdatePassword updatePassword, @PathVariable(name = "userId") Long userId){
         return new ResponseEntity<>(baseUserService.updatePassword(userId, updatePassword), HttpStatus.OK);
+    }
+
+    @GetMapping
+    public String getUser(){
+        return "Get user was called";
     }
 }

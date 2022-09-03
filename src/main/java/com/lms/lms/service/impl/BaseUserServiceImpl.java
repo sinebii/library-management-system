@@ -84,6 +84,14 @@ public class BaseUserServiceImpl implements BaseUserService {
     }
 
     @Override
+    public CreateUserResponse getUser(String email) {
+        BaseUser baseUser = userRepository.findAllByEmail(email);
+        if(baseUser ==null) throw new UsernameNotFoundException(email);
+        return mapper.map(baseUser, CreateUserResponse.class);
+
+    }
+
+    @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         BaseUser baseUser = userRepository.findAllByEmail(email);
         if(baseUser ==null) throw new UsernameNotFoundException(email);
