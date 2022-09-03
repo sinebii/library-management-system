@@ -1,5 +1,6 @@
 package com.lms.lms;
 
+import com.lms.lms.security.AppProperties;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -23,6 +24,11 @@ public class LmsApplication {
     @Bean
     public SpringApplicationContext springApplicationContext(){
         return new SpringApplicationContext();
+    }
+
+    @Bean("AppProperties")
+    public AppProperties app(){
+        return new AppProperties();
     }
 
 }
